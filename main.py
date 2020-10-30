@@ -19,10 +19,10 @@ if not i_holup.successfully_made_post():
 red_holup.delete_saved_image()
 
 # MADLADS
-# red_madlads = PullReddit("madlads")
-# posts_madlads = red_madlads.get_top_historic_data("week")
-# new_post_madlads = red_madlads.save_top_and_return_post(posts_madlads)
-# i_madlads = InstaBot(os.getenv("MADLADS_USERNAME"), os.getenv("MADLADS_PASSWORD"), new_post_madlads.subreddit, new_post_madlads.rating)
-# if not i_madlads.successfully_made_post():
-#   red_madlads.delete_post(new_post_madlads)
-# red_madlads.delete_saved_image()
+red_madlads = PullReddit("madlads")
+posts_madlads = red_madlads.get_top_historic_data("week")
+new_post_madlads = red_madlads.save_top_and_return_post(posts_madlads)
+i_madlads = InstaBot(os.getenv("MADLADS_USERNAME"), os.getenv("MADLADS_PASSWORD"), new_post_madlads.subreddit, new_post_madlads.rating)
+if not i_madlads.successfully_made_post():
+  red_madlads.delete_post(new_post_madlads)
+red_madlads.delete_saved_image()

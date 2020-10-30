@@ -1,5 +1,7 @@
 from selenium import webdriver
 from time import sleep
+from selenium.common.exceptions import NoSuchElementException
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
@@ -18,7 +20,7 @@ class InstaBot:
 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--user-agent="Mozilla/5.0 (iPhone; CPU iPhone OS 13_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/83.0.4103.116 Mobile/15E148 Safari/604.1"')
-    self.driver = webdriver.Chrome(options=chrome_options)
+    self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
 
   def login(self):
     self.driver.get("https://instagram.com")
@@ -33,11 +35,13 @@ class InstaBot:
   
   def close_popups(self):
     #Not Now Button
-    self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div/div/button").click()
+    if self.check_exists_by_xpath("/html/body/div[1]/section/main/div/div/div/button"):
+      self.driver.find_element_by_xpath("/html/body/div[1]/section/main/div/div/div/button").click()
     self.sleep_random()
     
     #Cancel on adding to home screen
-    self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div/div[3]/button[2]").click()
+    if self.check_exists_by_xpath("/html/body/div[4]/div/div/div/div[3]/button[2]"):
+      self.driver.find_element_by_xpath("/html/body/div[4]/div/div/div/div[3]/button[2]").click()
     self.sleep_random()
   
   def post(self):
@@ -94,3 +98,10 @@ class InstaBot:
   def sleep_random(self):
     num = 1+random.randint(1,3)
     sleep(num)
+
+  def check_exists_by_xpath(self, xpath):
+    try:
+        self.driver.find_element_by_xpath(xpath)
+    except NoSuchElementException:
+        return False
+    return True
